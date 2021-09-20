@@ -20,3 +20,16 @@ steps:
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'package'
+- task: DownloadBuildArtifacts@1
+  inputs:
+    buildType: 'current'
+    downloadType: 'single'
+    artifactName: 'drop'
+    downloadPath: '$(System.ArtifactsDirectory)'
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'Visual Studio Enterprise (57bbbf8b-0ce1-43ee-ad1a-dba24176c3a6)'
+    appType: 'webApp'
+    WebAppName: 'Spacegame2580'
+    packageForLinux: '$(System.ArtifactsDirectory)/**/*.zip'
